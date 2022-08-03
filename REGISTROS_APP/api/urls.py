@@ -1,9 +1,14 @@
 from django import views
 from django.urls import path
-""" from DESPACHOS.api.views import DespachosView, DespachosDetalle, DespachosSearch """
+from REGISTROS_APP.api.views import RegistrosView, RegistrosDetalle, RegistrosSearch, ValidacionesView, ValidacionesDetalle ,ValidacionesSearch
 
 urlpatterns = [
-    """ path('despachos-view/', DespachosView.as_view(), name='despachos-view'),
-    path('despachos-detalle/<int:id>', DespachosDetalle.as_view(), name='despachos-detalle'),
-    path('despachos-search/', DespachosSearch.as_view(), name='despachos-search'), """
+    path('registros-view/', RegistrosView.as_view(), name='registros-view'),
+    path('registros-detalle/<int:id>', RegistrosDetalle.as_view(), name='registros-detalle'),
+    path('registros-search/', RegistrosSearch.as_view(), name='registros-search'),
+
+
+    path('validaciones-view/', ValidacionesView.as_view(), name='validaciones-view'),
+    path('validaciones-detalle/<int:id>', ValidacionesDetalle.as_view(), name='validaciones-detalle'),
+    path('validaciones-search/', ValidacionesSearch.as_view(), name='validaciones-search'),
 ]

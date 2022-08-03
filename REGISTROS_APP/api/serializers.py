@@ -11,7 +11,7 @@ class RegistrosSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class VlidacionesSerializer(serializers.ModelSerializer):
+class ValidacionesSerializer(serializers.ModelSerializer):
 
     #user = UserSerializer(read_only=True) #AGREGAMOS LOS COMENTARIOS A CADA EDIFICACIÓN
     registros = RegistrosSerializer(read_only=True) #AGREGAMOS LOS COMENTARIOS A CADA EDIFICACIÓN

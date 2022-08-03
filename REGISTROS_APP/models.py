@@ -19,7 +19,7 @@ class RegistrosTable(models.Model):
     colonia = models.CharField(max_length = 110, verbose_name='Colonia')
     calle = models.CharField(max_length = 110, verbose_name='Calle')
     num_ext = models.CharField(max_length = 110, verbose_name='Número Exterior')
-    num_int = models.CharField(max_length = 110, verbose_name='Número Interior')
+    num_int = models.CharField(max_length = 110, verbose_name='Número Interior', null=True, blank=True)
     tipo_usuario = models.CharField(max_length = 110, verbose_name='Tipo de Usuario')
     asunto = models.CharField(max_length = 110, verbose_name='Asunto')
     vicepresidencia = models.CharField(max_length = 110, verbose_name='Vicepresidencia')
@@ -36,6 +36,9 @@ class RegistrosTable(models.Model):
         verbose_name_plural = 'Registros'
         ordering = ['-created_at'] #ORDENAR PONIENDO PRIMERO LOS ÚLTIMOS ARTÍCULOS PUBLICADOS
 
+    def __str__(self):
+        return str(self.user) + ' - ' + self.remitente + ' ' + self.vicepresidencia
+
 
 class ValidacionesTable(models.Model):
 
@@ -51,3 +54,6 @@ class ValidacionesTable(models.Model):
         verbose_name = 'Validaciones'
         verbose_name_plural = 'Validaciones'
         ordering = ['-created_at'] #ORDENAR PONIENDO PRIMERO LOS ÚLTIMOS ARTÍCULOS PUBLICADOS
+
+    def __str__(self):
+        return str(self.user) + ' - ' + self.folio_ms + ' ' + self.registro
