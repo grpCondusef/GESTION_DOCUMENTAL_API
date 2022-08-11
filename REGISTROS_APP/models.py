@@ -26,6 +26,7 @@ class RegistrosTable(models.Model):
     peso = models.FloatField(max_length = 110, verbose_name='Peso', null=True, blank=True)
     costo = models.FloatField(max_length = 110, verbose_name='Costo', null=True, blank=True)
     folio_diario = models.FloatField(max_length = 110, verbose_name='Folio Diario', null=True, blank=True)
+    folio_ms = models.CharField(max_length = 110, verbose_name='Folio MS', null=True, blank=True)
     acuse = models.FileField(upload_to='uploads/', null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Creado el')

@@ -11,9 +11,11 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+#BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR=os.path.dirname(os.path.dirname(os.path.abspath(__file__))) #-------------------------------
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +27,7 @@ SECRET_KEY = 'django-insecure-+r2bzw&5dv!aqw7#iklm$(_-8x)%6v9ck-ml8!=qoy$82mrfnl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] #PERMITIR QUE CUALQUIER HOST SE CONECTE
 
 
 # Application definition
@@ -42,9 +44,11 @@ INSTALLED_APPS = [
     'REGISTROS_APP', #==========AGREGAR LA APP DE LOS REGISTROS===============
     'rest_framework_simplejwt',
     'rest_framework.authtoken', #===============AGREGAR JWT===================
+    'corsheaders',  # PARA DESACTIVAR LOS "CORS HEADERS"
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'GESTION_CORRESPONDENCIA.urls'
@@ -80,8 +85,12 @@ WSGI_APPLICATION = 'GESTION_CORRESPONDENCIA.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd9ktj65smu08t5',
+        'USER': 'zjraorfaxpiidr',
+        'PASSWORD': '7df40e1bdb14e2f1aafbf1ecdeddfc0d94edf3fb928243db97b3a43b4fd30b24',
+        'HOST': 'ec2-44-206-11-200.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
@@ -120,6 +129,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+STATIC_ROOT=os.path.join(BASE_DIR, 'staticfiles') #------------------------------------------
+STATICFILES_STORAGE='whitenoise.storage.CompressedStaticFilesStorage' #----------------------------
+
 STATIC_URL = 'static/'
 
 # Default primary key field type
@@ -146,3 +158,13 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=365),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=365),
 }
+
+#-------------------------------------DESACTIVAR CORS HEADER---------------------------------
+
+CORS_ORIGIN_ALLOW_ALL = True #====== DAR ACCESO A TODOS LAS URL
+
+#-------------------------CONFIGURAR BASE DE DATOS DE PRODUCCIÓN Y DESARROLLO---------------------------------
+try:
+    from .local_settings import DATABASES, DEBUG
+except ImportError as e:
+    print('Error:', e.msg)

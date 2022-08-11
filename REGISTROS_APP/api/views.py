@@ -4,6 +4,8 @@ from rest_framework import status, generics, filters #PARA MANDAR EL ESTATUS DEL
 from REGISTROS_APP.models import RegistrosTable, ValidacionesTable #EL MODEL DE BD DE LAS TABLAS DE LA BD
 from REGISTROS_APP.api.serializers import RegistrosSerializer, ValidacionesSerializer
 from USER_APP.models import User
+from datetime import datetime
+import pytz #PARA TRABAJAR CON LA FECHA
 
 
 class RegistrosView(APIView):
@@ -17,9 +19,18 @@ class RegistrosView(APIView):
 
     # ----------AGREGAR UN NUEVO REGISTRO A LA BASE DE DATOS------------------------
     def post(self, request):
+
+        today = datetime.now().replace(tzinfo=pytz.UTC).date()   # TRAIGO LA FECHA DE HOY
+        actual_year = today.year # AÑO ACTUAL MENOS 2000 PARA QUE NO SEA TAN GRANDE EL NÚMERO DE  OFICIO
+        actual_year_regist = RegistrosTable.objects.filter(created_at__year=today.year)  # LOS REGISTROS DEL AÑO
+        # CUANTOS REGISTROS HAY EN EL AÑO, MÁS UNO
+        count_register = (actual_year_regist.count() + 1)
+        # EL NÚMERO DE OFICIO ES LA CONCATENACIÓN DEL NÚMERO DE REGISTROS MÁS UNO Y EL AÑO ACTUAL
+        folio = f'MS-{count_register}-{actual_year}'
+
         serializer = RegistrosSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(folio_ms=folio)
             return Response(serializer.data)
         else:
             return Response(serializer.data)
